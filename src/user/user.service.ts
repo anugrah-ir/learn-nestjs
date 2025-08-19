@@ -11,12 +11,18 @@ export class UserService {
     ) {}
 
     async findByID(id: string) {
-        const user = await this.userRepo.findOne({ where: { id} });
+        const user = await this.userRepo.findOne({ where: { id } });
         if(!user) {
             throw new NotFoundException('User not found');
         }
 
         return user
+    }
+
+    async getProfile(id: string) {
+        const user = await this.findByID(id);
+        const { password, ...result } = user;
+        return result;
     }
 
     async changePassword(id: string, oldPassword: string, newPassword: string) {
